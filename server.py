@@ -10,7 +10,13 @@ CORS(app)
 
 @app.route('/')
 def home():
-    with open(os.path.join(os.getcwd() , 'hashdb.json')) as f:
+    with open(os.path.join(os.getcwd() , 'details.json')) as f:
+        data = json.load(f)
+    return data
+
+@app.route('/report')
+def report():
+    with open(os.path.join(os.getcwd() , 'db.json')) as f:
         data = json.load(f)
     return data
 
@@ -22,7 +28,7 @@ def login():
         subprocess.Popen("app.py " + credentials['email'] + " " + credentials['password'], shell=True)
         # print("app.py " + credentials['email'] + " " + credentials['password'], file= sys.stderr)
         return credentials
-    
+
 
 if __name__ == '__main__':
     app.run(debug=True)
