@@ -9,3 +9,4 @@ def generate_report(Id):
     response = requests.get(url, params=params)
 
     print(response.json())
+

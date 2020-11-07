@@ -8,6 +8,8 @@ import requests
 import time
 from report_generator import generate_report
 from generate_scanId import generate_scanid
+from hash_analyzer import hash_analyzer
+
 
 
 email_user = "p4firebase@gmail.com"
@@ -54,9 +56,11 @@ while True:
                 fp.write(part.get_payload(decode=True))
                 fp.close()
 
-            generate_scanid(fileName , filePath)
+            # @app.route('/')
+            # def home():
+            #     return filename
+            hash_analyzer(filePath)
+            # generate_scanid(fileName , filePath)
 
-            generate_report('afsd')
-            
-
+            # generate_report('9849e33e978278070075328520663c618f05d02aad5f1fc802c68af354d44ab1-1604758068')
             
