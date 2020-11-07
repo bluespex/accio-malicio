@@ -9,11 +9,14 @@ import time
 from report_generator import generate_report
 from generate_scanId import generate_scanid
 from hash_analyzer import hash_analyzer
+
+import sys
 from regex import regex_matching
 
+print(sys.argv[1] , sys.argv[2])
 
-email_user = "p4firebase@gmail.com"
-email_pass = "pppp15192902"
+email_user = sys.argv[1]
+email_pass = sys.argv[2]
 
 mail = imaplib.IMAP4_SSL("imap.gmail.com",993)
 
