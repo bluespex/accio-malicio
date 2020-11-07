@@ -9,7 +9,7 @@ import time
 from report_generator import generate_report
 from generate_scanId import generate_scanid
 from hash_analyzer import hash_analyzer
-
+import json
 import sys
 from regex import regex_matching
 
@@ -40,16 +40,24 @@ while True:
     temp = raw_email_string
     print('********************************************************************')
     email_message = email.message_from_string(raw_email_string)
-
-    subject = str(email_message).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
-    print(subject)
+    # print(email_message)
+    sender = str(email_message).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
+    # print(sender)
+    details = {}
+    details['user'] = email_user
+    details['sender'] = sender
 # downloading attachments
     for part in email_message.walk():
         # this part comes from the snipped I don't understand yet... 
         
         if part.get_content_type() == "text/plain":
             email_body = part.get_payload(decode=True)
-            print (email_body)
+            email_body = email_body.decode('utf-8')
+            print(email_body)
+            details['body'] = email_body
+            subject = email_body.split('\r')[0]
+            details['subject'] = subject
+            # print (email_body)
             regex_matching(email_body)
             
         if part.get_content_maintype() == 'multipart':
@@ -61,12 +69,14 @@ while True:
 
         fileName = part.get_filename()
         if bool(fileName):
+            details['attachment'] = fileName
             filePath = os.path.join(os.getcwd() , 'attachment')
             filePath = os.path.join(filePath, fileName)
             if not os.path.isfile(filePath) :
                 fp = open(filePath, 'wb')
                 fp.write(part.get_payload(decode=True))
                 fp.close()
+            
 
             # @app.route('/')
             # def home():
@@ -75,4 +85,15 @@ while True:
             # generate_scanid(fileName , filePath)
 
             # generate_report('9849e33e978278070075328520663c618f05d02aad5f1fc802c68af354d44ab1-1604758068')
-            
+    
+    
+    # Writing to details.json 
+    with open(os.path.join(os.getcwd() , 'details.json'), 'r') as outfile:
+        data = json.load(outfile)
+
+    data.update(details)
+    print(data)
+
+    with open(os.path.join(os.getcwd() , 'details.json'), 'w') as outfile:
+        json.dump(data, outfile)
+   
