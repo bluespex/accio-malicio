@@ -1,4 +1,6 @@
 import requests
+import os
+import json
 
 
 def generate_report(Id):
@@ -8,5 +10,8 @@ def generate_report(Id):
 
     response = requests.get(url, params=params)
 
-    print(response.json())
+    # print(response.json())
+
+    with open(os.path.join(os.getcwd() , 'db.json'), 'w') as outfile:
+        json.dump(response.json(), outfile)
 
