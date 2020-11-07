@@ -10,7 +10,7 @@ CORS(app)
 
 @app.route('/')
 def home():
-    with open(os.path.join(os.getcwd() , 'db.json')) as f:
+    with open(os.path.join(os.getcwd() , 'hashdb.json')) as f:
         data = json.load(f)
     return data
 

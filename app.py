@@ -11,6 +11,7 @@ from generate_scanId import generate_scanid
 from hash_analyzer import hash_analyzer
 
 import sys
+from regex import regex_matching
 
 print(sys.argv[1] , sys.argv[2])
 
@@ -45,10 +46,19 @@ while True:
 # downloading attachments
     for part in email_message.walk():
         # this part comes from the snipped I don't understand yet... 
+        
+        if part.get_content_type() == "text/plain":
+            email_body = part.get_payload(decode=True)
+            print (email_body)
+            regex_matching(email_body)
+            
         if part.get_content_maintype() == 'multipart':
             continue
         if part.get('Content-Disposition') is None:
             continue
+
+        
+
         fileName = part.get_filename()
         if bool(fileName):
             filePath = os.path.join(os.getcwd() , 'attachment')
