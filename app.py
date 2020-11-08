@@ -15,6 +15,9 @@ from regex import regex_matching
 
 print(sys.argv[1] , sys.argv[2])
 
+with open(os.path.join(os.getcwd() , 'details.json'), 'w') as outfile:
+    json.dump({}, outfile)
+
 email_user = sys.argv[1]
 email_pass = sys.argv[2]
 
@@ -42,10 +45,13 @@ while True:
     email_message = email.message_from_string(raw_email_string)
     # print(email_message)
     sender = str(email_message).split("Subject: ", 1)[1].split("\nTo:", 1)[0]
+    sender = sender.split('From: ')
+
     # print(sender)
     details = {}
     details['user'] = email_user
-    details['sender'] = sender
+    details['sender'] = sender[1]
+    details['subject'] = sender[0]
 # downloading attachments
     for part in email_message.walk():
         # this part comes from the snipped I don't understand yet... 
@@ -56,7 +62,7 @@ while True:
             print(email_body)
             details['body'] = email_body
             subject = email_body.split('\r')[0]
-            details['subject'] = subject
+            
             # print (email_body)
             regex_matching(email_body)
             
