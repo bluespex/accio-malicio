@@ -81,6 +81,7 @@ class SignInBase extends Component {
     .catch((error) => {
       console.error('Error:', error);
     });
+    this.props.history.push("/home");
     event.preventDefault();
   };
 
